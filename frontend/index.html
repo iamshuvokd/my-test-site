@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Test Site</title>
+</head>
+<body>
+  <h1>My Test Site</h1>
+  <p>Frontend is running with Docker + Nginx.</p>
+
+  <h2>Contact Form</h2>
+
+  <form id="contactForm">
+    <input type="text" id="name" placeholder="Name" required><br><br>
+    <input type="email" id="email" placeholder="Email" required><br><br>
+    <textarea id="message" placeholder="Message" required></textarea><br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="response"></p>
+
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const data = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value
+      };
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      document.getElementById("response").innerText = await res.text();
+      this.reset();
+    });
+  </script>
+</body>
+</html>
